@@ -1,12 +1,13 @@
 package main
 
 import (
-	"SIDTool/sid"
-	"SIDTool/utils"
 	"fmt"
 	"strings"
 
-	"github.com/p0dalirius/goopts/parser"
+	"github.com/TheManticoreProject/SIDTool/sid"
+	"github.com/TheManticoreProject/SIDTool/utils"
+
+	"github.com/TheManticoreProject/goopts/parser"
 )
 
 var (
@@ -18,7 +19,7 @@ var (
 )
 
 func parseArgs() {
-	ap := parser.ArgumentsParser{Banner: "SIDTool - by Remi GASCOU (Podalirius) - v1.1"}
+	ap := parser.ArgumentsParser{Banner: "SIDTool - by Remi GASCOU (Podalirius) @ TheManticoreProject - v1.2"}
 
 	ap.NewStringPositionalArgument(&mode, "mode", "Mode.")
 
