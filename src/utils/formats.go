@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/hex"
+	"encoding/base64"
 	"fmt"
 	"regexp"
 	"strings"
@@ -10,6 +11,11 @@ import (
 func IsHexString(s string) bool {
 	match, _ := regexp.MatchString("^[0-9a-fA-F]+$", s)
 	return match
+}
+
+func IsBase64String(s string) ([]byte, bool){
+	decoded, err := base64.StdEncoding.DecodeString(s)
+	return decoded, err == nil
 }
 
 func BytesToBytesString(data []byte) string {
@@ -46,6 +52,11 @@ func BytesToHexString(data []byte) string {
 	for _, b := range data {
 		result += fmt.Sprintf("%02x", b)
 	}
+	return result
+}
+
+func BytesToBase64String(data []byte) string {
+	result := base64.StdEncoding.EncodeToString(data)
 	return result
 }
 

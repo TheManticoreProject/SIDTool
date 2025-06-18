@@ -14,6 +14,7 @@ var (
 	mode     string
 	value    string
 	toHex    bool
+	toBase64 bool
 	toBytes  bool
 	toString bool
 )
@@ -30,6 +31,7 @@ func parseArgs() {
 		fmt.Printf("[error] Error creating ArgumentGroup: %s\n", err)
 	} else {
 		groupOutputFormats.NewBoolArgument(&toHex, "-x", "--to-hex", false, "Convert the input value to hexadecimal.")
+		groupOutputFormats.NewBoolArgument(&toBase64, "-a", "--to-base64", false, "Convert the input value to base64.")
 		groupOutputFormats.NewBoolArgument(&toBytes, "-b", "--to-bytes", false, "Convert the input value to bytes.")
 		groupOutputFormats.NewBoolArgument(&toString, "-s", "--to-string", false, "Convert the input value to string.")
 	}
@@ -54,11 +56,18 @@ func main() {
 			sid.FromString(value)
 		} else if utils.IsHexString(value) {
 			sid.FromBytes(utils.BytesFromHexString(value))
+		} else if decoded, ok := utils.IsBase64String(value); ok{
+			sid.FromBytes(decoded)
+		} else {
+			data, _ := utils.BytesFromBytesString(value)
+			sid.FromBytes(data)
 		}
 
 		// Export format
 		if toHex {
 			fmt.Printf("%s\n", utils.BytesToHexString(sid.ToBytes()))
+		} else if toBase64 {
+			fmt.Printf("%s\n", utils.BytesToBase64String(sid.ToBytes()))
 		} else if toBytes {
 			fmt.Printf("%s\n", utils.BytesToBytesString(sid.ToBytes()))
 		} else if toString {
